@@ -1,0 +1,20 @@
+{
+    "name": "krzystof/business-calendar",
+    "description": "Manage working hours and events in a business calendar",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christophe Graniczny",
+            "email": "getintouch@christophegraniczny.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "BusinessCalendar\\": "src/"
+        }
+    },
+    "require": {
+        "nesbot/carbon": "~1.14"
+    }
+}
