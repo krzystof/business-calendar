@@ -2,17 +2,17 @@
 
 namespace BusinessCalendar;
 
-class WorkingHours
+class WorkingWeek
 {
     /**
-     * An array of the Openings for this WorkingHours.
+     * An array of Openings for the working week.
      *
      * @var array
      */
     protected $openings;
 
     /**
-     * Instantiate a new WorkingHours.
+     * Instantiate a new WorkingWeek.
      *
      * @param array $openings
      */
@@ -22,7 +22,7 @@ class WorkingHours
     }
 
     /**
-     * Add an opening to the working hours.
+     * Add an opening to the working week.
      *
      * @param Opening $opening
      */
@@ -32,12 +32,22 @@ class WorkingHours
     }
 
     /**
-     * Count how many openings this working hours contains.
+     * Count how many openings the working week contains.
      *
      * @return integer
      */
     public function countOpenings()
     {
         return count($this->openings);
+    }
+
+    /**
+     * Delete an opening from the working week.
+     *
+     * @param  integer $key
+     */
+    public function deleteOpening($key)
+    {
+        unset($this->openings[$key]);
     }
 }
