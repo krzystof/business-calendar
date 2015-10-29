@@ -73,7 +73,7 @@ class Opening
     }
 
     /**
-     * Get the beginning of the Opennig.
+     * Get the beginning of the Opening.
      *
      * @return Carbon\Carbon
      */
@@ -92,13 +92,27 @@ class Opening
         return $this->closesAt;
     }
 
-    public function overlap($argument1)
+    /**
+     * Check wether the Opening overlaps the other opening.
+     *
+     * @param  BusinessCalendar\Opening $opening
+     *
+     * @return boolean
+     */
+    public function overlaps(Opening $opening)
     {
-        // TODO: write logic here
+        if (
+            $this->isOpenAt($opening->opensAt())
+         || $this->isOpenAt($opening->closesAt())
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Set the opensAt and closesAt attributes.
+     * Set the opensAt and closesAt attributes as Carbon instances.
      */
     protected function setOpensAndClosesAt()
     {
@@ -107,5 +121,17 @@ class Opening
         );
 
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
+    }
+
+    /**
+     * Check if the opening is Open at a given timestamp.
+     *
+     * @param  Carbon\Carbon  $time
+     *
+     * @return boolean
+     */
+    protected function isOpenAt(Carbon $time)
+    {
+        return $time->between($this->opensAt, $this->closesAt);
     }
 }
