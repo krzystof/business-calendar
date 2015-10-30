@@ -33,11 +33,13 @@ class OpeningSpec extends ObjectBehavior
         $opening3 = new Opening(Carbon::WEDNESDAY, '08:00', 4*3600);
         $opening4 = new Opening(Carbon::TUESDAY, '11:00', 3600);
         $opening5 = new Opening(Carbon::MONDAY, '11:00', 24*3600);
+        $opening6 = new Opening(Carbon::TUESDAY, '09:00', 10*3600);
 
         $this->overlaps($opening1)->shouldReturn(true);
         $this->overlaps($opening2)->shouldReturn(true);
         $this->overlaps($opening3)->shouldReturn(false);
         $this->overlaps($opening4)->shouldReturn(true);
         $this->overlaps($opening5)->shouldReturn(true);
+        $this->overlaps($opening6)->shouldReturn(true);
     }
 }

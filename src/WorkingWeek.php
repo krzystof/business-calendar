@@ -5,7 +5,7 @@ namespace BusinessCalendar;
 class WorkingWeek
 {
     /**
-     * An array of Openings for the working week.
+     * An Collection of Openings for the working week.
      *
      * @var array
      */
@@ -16,7 +16,7 @@ class WorkingWeek
      *
      * @param array $openings
      */
-    public function __construct($openings = [])
+    public function __construct(OpeningCollection $openings)
     {
         $this->openings = $openings;
     }
@@ -28,7 +28,17 @@ class WorkingWeek
      */
     public function addOpening(Opening $opening)
     {
-        $this->openings[] = $opening;
+        foreach ($this->openings as $storedOpening) {
+            if ($opening->overlaps($storedOpening)) {
+                $storedOpening->merges($opening);
+            }
+        }
+
+        if (! $this->hasUpdatedOpenings()) {
+            $this->openings->add($opening);
+        }
+
+        $this->openings->save();
     }
 
     /**
@@ -38,7 +48,7 @@ class WorkingWeek
      */
     public function countOpenings()
     {
-        return count($this->openings);
+        return $this->openings->count();
     }
 
     /**
@@ -48,6 +58,17 @@ class WorkingWeek
      */
     public function deleteOpening($key)
     {
-        unset($this->openings[$key]);
+        $this->openings->delete($key);
+    }
+
+    protected function hasUpdatedOpenings()
+    {
+        foreach ($this->openings as $opening) {
+            if ($opening->hasBeenUpdated()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

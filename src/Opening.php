@@ -41,6 +41,8 @@ class Opening
      */
     protected $closesAt;
 
+    protected $updated = false;
+
     /**
      * Names of days of the week.
      *
@@ -63,11 +65,12 @@ class Opening
      * @param string  $start
      * @param integer $length
      */
-    public function __construct($day, $time, $length)
+    public function __construct($day, $time, $length, $timezone = 'Europe/Paris')
     {
         $this->day = $day;
         $this->time = $time;
         $this->length = $length;
+        $this->timezone = $timezone;
 
         $this->setOpensAndClosesAt();
     }
@@ -104,11 +107,35 @@ class Opening
         if (
             $this->isOpenAt($opening->opensAt())
          || $this->isOpenAt($opening->closesAt())
+         || $this->isContainedIn($opening)
         ) {
             return true;
         }
 
         return false;
+    }
+
+    public function merges(Opening $opening)
+    {
+        if ($this->isOpenAt($opening->opensAt())) {
+            $this->closesAt = $opening->closesAt();
+            $this->setUpdated(true);
+        }
+
+        if ($this->isOpenAt($opening->closesAt())) {
+            $this->opensAt = $opening->opensAt();
+            $this->setUpdated(true);
+        }
+    }
+
+    public function hasBeenUpdated()
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated($boolean)
+    {
+        return $this->updated = $boolean;
     }
 
     /**
@@ -117,7 +144,7 @@ class Opening
     protected function setOpensAndClosesAt()
     {
         $this->opensAt = Carbon::createFromFormat(
-            'l H:i', static::$days[$this->day] . ' ' . $this->time
+            'l H:i', static::$days[$this->day] . ' ' . $this->time, $this->timezone
         );
 
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
@@ -133,5 +160,17 @@ class Opening
     protected function isOpenAt(Carbon $time)
     {
         return $time->between($this->opensAt, $this->closesAt);
+    }
+
+    /**
+     * Checks if the opening is contained in another opening.
+     *
+     * @param  BusinessCalendar\Opening $opening
+     *
+     * @return boolean
+     */
+    protected function isContainedIn(Opening $opening)
+    {
+        return $opening->isOpenAt($this->opensAt) && $opening->isOpenAt($this->closesAt);
     }
 }
