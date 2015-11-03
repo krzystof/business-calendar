@@ -16,6 +16,7 @@ class OpeningArray implements OpeningCollection
     public function add(Opening $opening)
     {
         array_push($this->openings, $opening);
+        $this->save();
     }
 
     public function count()

@@ -2,6 +2,8 @@
 
 namespace BusinessCalendar;
 
+use Carbon\Carbon;
+
 class WorkingWeek
 {
     /**
@@ -11,14 +13,17 @@ class WorkingWeek
      */
     protected $openings;
 
+    protected $timezone;
+
     /**
      * Instantiate a new WorkingWeek.
      *
      * @param array $openings
      */
-    public function __construct(OpeningCollection $openings)
+    public function __construct(OpeningCollection $openings, $timezone = 'Europe/Paris')
     {
         $this->openings = $openings;
+        $this->timezone = $timezone;
     }
 
     /**
@@ -34,11 +39,12 @@ class WorkingWeek
             }
         }
 
-        if (! $this->hasUpdatedOpenings()) {
+        // echo $opening->closesAt();
+        // echo ' and ' . $this->hasUpdatedOpenings();
+
+        if (! $opening->hasBeenMerged()) {
             $this->openings->add($opening);
         }
-
-        $this->openings->save();
     }
 
     /**
@@ -61,6 +67,17 @@ class WorkingWeek
         $this->openings->delete($key);
     }
 
+    public function isOpenAt(Carbon $timestamp)
+    {
+        foreach ($this->openings as $opening) {
+            if ($opening->isOpenAt($timestamp)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     protected function hasUpdatedOpenings()
     {
         foreach ($this->openings as $opening) {
@@ -70,5 +87,12 @@ class WorkingWeek
         }
 
         return false;
+    }
+
+    public function flushOpenings()
+    {
+        foreach ($this->openings as $key => $opening) {
+            $this->deleteOpening($key);
+        }
     }
 }

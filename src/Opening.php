@@ -42,6 +42,7 @@ class Opening
     protected $closesAt;
 
     protected $updated = false;
+    protected $merged = false;
 
     /**
      * Names of days of the week.
@@ -67,12 +68,15 @@ class Opening
      */
     public function __construct($day, $time, $length, $timezone = 'Europe/Paris')
     {
+        // if length is greater than a week, throw an Exception
         $this->day = $day;
         $this->time = $time;
         $this->length = $length;
         $this->timezone = $timezone;
 
-        $this->setOpensAndClosesAt();
+        $this->setOpensAndClosesAt(Carbon::createFromFormat(
+            'l H:i', static::$days[$this->day] . ' ' . $this->time, $this->timezone
+        ));
     }
 
     /**
@@ -112,41 +116,102 @@ class Opening
             return true;
         }
 
+        if (
+            $this->isOpenAt($opening->opensAt()->subWeek())
+         || $this->isOpenAt($opening->closesAt()->subWeek())
+         || $this->isContainedIn($opening->lastWeek())
+        ) {
+            return true;
+        }
+        // }
+
         return false;
     }
 
+    /**
+     * Merge two Opening together.
+     *
+     * @param  BusinessCalendar\Opening  $opening
+     *
+     * @return void
+     */
     public function merges(Opening $opening)
     {
-        if ($this->isOpenAt($opening->opensAt())) {
-            $this->closesAt = $opening->closesAt();
-            $this->setUpdated(true);
+        if (! $this->overlaps($opening)) {
+            return;
         }
 
-        if ($this->isOpenAt($opening->closesAt())) {
-            $this->opensAt = $opening->opensAt();
-            $this->setUpdated(true);
+        if ($this->closesAt() < $opening->closesAt()) {
+            $this->closesAt = $opening->closesAt();
         }
+
+        if ($this->opensAt() > $opening->opensAt()) {
+            $this->opensAt = $opening->opensAt();
+        }
+
+        $this->setUpdated(true);
+        $opening->setMerged(true);
     }
 
+    /**
+     * Clone the opening set to the previous week dates.
+     *
+     * @return BusinessCalendar\Opening
+     */
+    public function lastWeek()
+    {
+        $lastWeek =  new Opening($this->day, $this->time, $this->length, $this->timezone);
+        $lastWeek->setOpensAndClosesAt($lastWeek->opensAt()->subWeek());
+
+        return $lastWeek;
+    }
+
+    /**
+     * The Opening has been updated.
+     *
+     * @return boolean
+     */
     public function hasBeenUpdated()
     {
         return $this->updated;
     }
 
+    /**
+     * Set the updated flag.
+     *
+     * @param bool $boolean
+     */
     public function setUpdated($boolean)
     {
         return $this->updated = $boolean;
     }
 
     /**
+     * The Opening has been merged with another Opening.
+     *
+     * @return boolean
+     */
+    public function hasBeenMerged()
+    {
+        return $this->merged;
+    }
+
+    /**
+     * Set the Merged flag.
+     *
+     * @param bool $boolean
+     */
+    public function setMerged($boolean)
+    {
+        return $this->merged = $boolean;
+    }
+
+    /**
      * Set the opensAt and closesAt attributes as Carbon instances.
      */
-    protected function setOpensAndClosesAt()
+    protected function setOpensAndClosesAt(Carbon $date)
     {
-        $this->opensAt = Carbon::createFromFormat(
-            'l H:i', static::$days[$this->day] . ' ' . $this->time, $this->timezone
-        );
-
+        $this->opensAt = $date;
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
     }
 
@@ -157,7 +222,7 @@ class Opening
      *
      * @return boolean
      */
-    protected function isOpenAt(Carbon $time)
+    public function isOpenAt(Carbon $time)
     {
         return $time->between($this->opensAt, $this->closesAt);
     }
@@ -171,6 +236,6 @@ class Opening
      */
     protected function isContainedIn(Opening $opening)
     {
-        return $opening->isOpenAt($this->opensAt) && $opening->isOpenAt($this->closesAt);
+        return $opening->isOpenAt($this->opensAt()) && $opening->isOpenAt($this->closesAt());
     }
 }
