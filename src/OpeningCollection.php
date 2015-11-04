@@ -10,4 +10,5 @@ interface OpeningCollection extends \Iterator
     // public function map(callable $callback);
     public function isEmpty();
     public function save();
+    public function last();
 }

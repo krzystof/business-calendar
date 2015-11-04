@@ -108,6 +108,10 @@ class Opening
      */
     public function overlaps(Opening $opening)
     {
+        // TODO refactor to:
+        // if ($this->touch($opening) || $this->touch($opening->previousWeek())) {
+        //     return true;
+        // }
         if (
             $this->isOpenAt($opening->opensAt())
          || $this->isOpenAt($opening->closesAt())
@@ -123,7 +127,6 @@ class Opening
         ) {
             return true;
         }
-        // }
 
         return false;
     }
@@ -140,6 +143,8 @@ class Opening
         if (! $this->overlaps($opening)) {
             return;
         }
+
+        // echo 'this: '.$this->opensAt().', '.$this->closesAt(). ' / opening: '.$opening->opensAt().', '.$opening->closesAt()."\n";
 
         if ($this->closesAt() < $opening->closesAt()) {
             $this->closesAt = $opening->closesAt();

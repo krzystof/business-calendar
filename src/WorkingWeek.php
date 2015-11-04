@@ -33,18 +33,8 @@ class WorkingWeek
      */
     public function addOpening(Opening $opening)
     {
-        foreach ($this->openings as $storedOpening) {
-            if ($opening->overlaps($storedOpening)) {
-                $storedOpening->merges($opening);
-            }
-        }
-
-        // echo $opening->closesAt();
-        // echo ' and ' . $this->hasUpdatedOpenings();
-
-        if (! $opening->hasBeenMerged()) {
-            $this->openings->add($opening);
-        }
+        $this->openings->add($opening);
+        $this->compileOpenings();
     }
 
     /**
@@ -78,6 +68,52 @@ class WorkingWeek
         return false;
     }
 
+    /**
+     * Delete all openings from the Collection.
+     *
+     * @return void
+     */
+    public function flushOpenings()
+    {
+        foreach ($this->openings as $key => $opening) {
+            $this->deleteOpening($key);
+        }
+    }
+
+    /**
+     * Loop through the openings Collection and merge
+     * overlaping openings.
+     *
+     * @return void
+     */
+    protected function compileOpenings()
+    {
+        if ($this->countOpenings() === 1) {
+            return;
+        }
+
+        $previous = $this->openings->last();
+
+        foreach ($this->openings as $key => $opening) {
+            if ($opening->overlaps($previous)) {
+                $previous->merges($opening);
+                $this->deleteOpening($key);
+
+                $this->compileOpenings();
+            }
+
+            $previous = $opening;
+        }
+
+        $this->resetOpeningsFlags();
+    }
+
+    /**
+     * Check wether it contains element in the Collection that
+     * have been updated.
+     *
+     * @return boolean
+     */
     protected function hasUpdatedOpenings()
     {
         foreach ($this->openings as $opening) {
@@ -89,10 +125,10 @@ class WorkingWeek
         return false;
     }
 
-    public function flushOpenings()
+    protected function resetOpeningsFlags()
     {
-        foreach ($this->openings as $key => $opening) {
-            $this->deleteOpening($key);
+        foreach ($this->openings as $opening) {
+            $opening->setUpdated(false);
         }
     }
 }

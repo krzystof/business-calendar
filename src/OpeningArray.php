@@ -65,4 +65,9 @@ class OpeningArray implements OpeningCollection
     {
         return isset($this->openings[$this->position]);
     }
+
+    public function last()
+    {
+        return end($this->openings);
+    }
 }
