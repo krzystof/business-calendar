@@ -26,7 +26,7 @@ class OpeningArray implements OpeningCollection
 
     public function delete($key)
     {
-        unset($this->openings[$key]);
+        array_splice($this->openings, $key, 1);
     }
 
     public function isEmpty()
@@ -69,5 +69,10 @@ class OpeningArray implements OpeningCollection
     public function last()
     {
         return end($this->openings);
+    }
+
+    public function toJson()
+    {
+        return json_encode($this->openings);
     }
 }

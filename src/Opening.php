@@ -212,15 +212,6 @@ class Opening
     }
 
     /**
-     * Set the opensAt and closesAt attributes as Carbon instances.
-     */
-    protected function setOpensAndClosesAt(Carbon $date)
-    {
-        $this->opensAt = $date;
-        $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
-    }
-
-    /**
      * Check if the opening is Open at a given timestamp.
      *
      * @param  Carbon\Carbon  $time
@@ -230,6 +221,20 @@ class Opening
     public function isOpenAt(Carbon $time)
     {
         return $time->between($this->opensAt, $this->closesAt);
+    }
+
+    public function __toString()
+    {
+        return $this->opensAt().' '.$this->closesAt();
+    }
+
+    /**
+     * Set the opensAt and closesAt attributes as Carbon instances.
+     */
+    protected function setOpensAndClosesAt(Carbon $date)
+    {
+        $this->opensAt = $date;
+        $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
     }
 
     /**

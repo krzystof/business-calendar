@@ -13,6 +13,11 @@ class WorkingWeek
      */
     protected $openings;
 
+    /**
+     * The Timezone to use for time comparison.
+     *
+     * @var string
+     */
     protected $timezone;
 
     /**
@@ -99,13 +104,11 @@ class WorkingWeek
                 $previous->merges($opening);
                 $this->deleteOpening($key);
 
-                $this->compileOpenings();
+                return $this->compileOpenings();
             }
 
             $previous = $opening;
         }
-
-        $this->resetOpeningsFlags();
     }
 
     /**
@@ -125,10 +128,10 @@ class WorkingWeek
         return false;
     }
 
-    protected function resetOpeningsFlags()
+    protected function output()
     {
-        foreach ($this->openings as $opening) {
-            $opening->setUpdated(false);
+        foreach ($this->openings as $key => $opening) {
+            echo 'Output item#'. $key .': '. $opening . "\n" ;
         }
     }
 }

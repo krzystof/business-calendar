@@ -49,7 +49,7 @@ class OpeningSpec extends ObjectBehavior
         $this->overlaps($opening9)->shouldReturn(false);
     }
 
-    function it_invalidates_when_the_length_exceeds_a_week()
+    function it_is_invalid_when_the_length_exceeds_a_week()
     {
         # code...
     }
