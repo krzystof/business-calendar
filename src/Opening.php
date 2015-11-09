@@ -3,6 +3,7 @@
 namespace BusinessCalendar;
 
 use Carbon\Carbon;
+use InvalidArgumentException;
 
 class Opening
 {
@@ -41,7 +42,18 @@ class Opening
      */
     protected $closesAt;
 
+    /**
+     * The Opening has been updated.
+     *
+     * @var boolean
+     */
     protected $updated = false;
+
+    /**
+     * The Opening has been merged.
+     *
+     * @var boolean
+     */
     protected $merged = false;
 
     /**
@@ -49,7 +61,7 @@ class Opening
      *
      * @var array
      */
-    protected static $days = array(
+    protected static $days = [
         Carbon::SUNDAY => 'Sunday',
         Carbon::MONDAY => 'Monday',
         Carbon::TUESDAY => 'Tuesday',
@@ -57,7 +69,16 @@ class Opening
         Carbon::THURSDAY => 'Thursday',
         Carbon::FRIDAY => 'Friday',
         Carbon::SATURDAY => 'Saturday',
-    );
+    ];
+
+    /**
+     * Common length in seconds.
+     *
+     * @var array
+     */
+    protected static $lengths = [
+        'WEEK' => 7 * 24 * 3600,
+    ];
 
     /**
      * Create a new Opening.
@@ -68,15 +89,16 @@ class Opening
      */
     public function __construct($day, $time, $length, $timezone = 'Europe/Paris')
     {
-        // if length is greater than a week, throw an Exception
+        if ($length > static::$lengths['WEEK']) {
+            throw new InvalidArgumentException('The length of the Opening cannot exceed a week');
+        }
+
         $this->day = $day;
         $this->time = $time;
         $this->length = $length;
         $this->timezone = $timezone;
 
-        $this->setOpensAndClosesAt(Carbon::createFromFormat(
-            'l H:i', static::$days[$this->day] . ' ' . $this->time, $this->timezone
-        ));
+        $this->setCarbonInstances();
     }
 
     /**
@@ -108,23 +130,7 @@ class Opening
      */
     public function overlaps(Opening $opening)
     {
-        // TODO refactor to:
-        // if ($this->touch($opening) || $this->touch($opening->previousWeek())) {
-        //     return true;
-        // }
-        if (
-            $this->isOpenAt($opening->opensAt())
-         || $this->isOpenAt($opening->closesAt())
-         || $this->isContainedIn($opening)
-        ) {
-            return true;
-        }
-
-        if (
-            $this->isOpenAt($opening->opensAt()->subWeek())
-         || $this->isOpenAt($opening->closesAt()->subWeek())
-         || $this->isContainedIn($opening->lastWeek())
-        ) {
+        if ($this->touch($opening) || $this->touch($opening->lastWeek())) {
             return true;
         }
 
@@ -143,8 +149,6 @@ class Opening
         if (! $this->overlaps($opening)) {
             return;
         }
-
-        // echo 'this: '.$this->opensAt().', '.$this->closesAt(). ' / opening: '.$opening->opensAt().', '.$opening->closesAt()."\n";
 
         if ($this->closesAt() < $opening->closesAt()) {
             $this->closesAt = $opening->closesAt();
@@ -166,7 +170,7 @@ class Opening
     public function lastWeek()
     {
         $lastWeek =  new Opening($this->day, $this->time, $this->length, $this->timezone);
-        $lastWeek->setOpensAndClosesAt($lastWeek->opensAt()->subWeek());
+        $lastWeek->moveOpening($lastWeek->opensAt()->subWeek());
 
         return $lastWeek;
     }
@@ -223,6 +227,11 @@ class Opening
         return $time->between($this->opensAt, $this->closesAt);
     }
 
+    /**
+     * Convert an Opening to a String.
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->opensAt().' '.$this->closesAt();
@@ -231,9 +240,12 @@ class Opening
     /**
      * Set the opensAt and closesAt attributes as Carbon instances.
      */
-    protected function setOpensAndClosesAt(Carbon $date)
+    protected function setCarbonInstances()
     {
-        $this->opensAt = $date;
+        $this->opensAt = Carbon::createFromFormat(
+            'l H:i', static::$days[$this->day] . ' ' . $this->time, $this->timezone
+        );
+
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
     }
 
@@ -241,11 +253,36 @@ class Opening
      * Checks if the opening is contained in another opening.
      *
      * @param  BusinessCalendar\Opening $opening
-     *
      * @return boolean
      */
     protected function isContainedIn(Opening $opening)
     {
         return $opening->isOpenAt($this->opensAt()) && $opening->isOpenAt($this->closesAt());
+    }
+
+    /**
+     * Move an opening to a given timestamp.
+     *
+     * @param  Carbon $timestamp
+     * @return void
+     */
+    protected function moveOpening(Carbon $timestamp)
+    {
+        $this->opensAt = $timestamp;
+        $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
+    }
+
+    /**
+     * Checks if an opening touches another opening.
+     *
+     * @param  BusinessCalendar\Opening $opening
+     *
+     * @return bool
+     */
+    protected function touch(Opening $opening)
+    {
+        return $this->isOpenAt($opening->opensAt())
+            || $this->isOpenAt($opening->closesAt())
+            || $this->isContainedIn($opening);
     }
 }

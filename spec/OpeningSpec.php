@@ -51,6 +51,8 @@ class OpeningSpec extends ObjectBehavior
 
     function it_is_invalid_when_the_length_exceeds_a_week()
     {
-        # code...
+        $this->beConstructedWith(Carbon::MONDAY, '08:00', 10 * 24 * 3600);
+
+        $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
 }

@@ -62,6 +62,13 @@ class WorkingWeek
         $this->openings->delete($key);
     }
 
+    /**
+     * Check wether the working week is open at a given timestamp.
+     *
+     * @param  Datetime  $timestamp
+     *
+     * @return boolean
+     */
     public function isOpenAt(Carbon $timestamp)
     {
         foreach ($this->openings as $opening) {
@@ -128,6 +135,11 @@ class WorkingWeek
         return false;
     }
 
+    /**
+     * Debugging function to display the current openings.
+     *
+     * @return void
+     */
     protected function output()
     {
         foreach ($this->openings as $key => $opening) {
