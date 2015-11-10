@@ -66,7 +66,6 @@ class WorkingWeek
      * Check wether the working week is open at a given timestamp.
      *
      * @param  Datetime  $timestamp
-     *
      * @return boolean
      */
     public function isOpenAt(Carbon $timestamp)

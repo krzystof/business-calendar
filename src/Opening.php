@@ -130,7 +130,7 @@ class Opening
      */
     public function overlaps(Opening $opening)
     {
-        if ($this->touch($opening) || $this->touch($opening->lastWeek())) {
+        if ($this->touch($opening)) {
             return true;
         }
 
@@ -195,15 +195,15 @@ class Opening
         return $this->updated = $boolean;
     }
 
-    /**
-     * The Opening has been merged with another Opening.
-     *
-     * @return boolean
-     */
-    public function hasBeenMerged()
-    {
-        return $this->merged;
-    }
+    // /**
+    //  * The Opening has been merged with another Opening.
+    //  *
+    //  * @return boolean
+    //  */
+    // public function hasBeenMerged()
+    // {
+    //     return $this->merged;
+    // }
 
     /**
      * Set the Merged flag.
@@ -219,12 +219,12 @@ class Opening
      * Check if the opening is Open at a given timestamp.
      *
      * @param  Carbon\Carbon  $time
-     *
      * @return boolean
      */
     public function isOpenAt(Carbon $time)
     {
-        return $time->between($this->opensAt, $this->closesAt);
+        return $time->between($this->opensAt, $this->closesAt)
+            || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
     }
 
     /**
@@ -242,11 +242,31 @@ class Opening
      */
     protected function setCarbonInstances()
     {
-        $this->opensAt = Carbon::createFromFormat(
-            'l H:i', static::$days[$this->day] . ' ' . $this->time, $this->timezone
-        );
-
+        $this->opensAt = $this->setOpenDate();
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
+    }
+
+    protected function setOpenDate()
+    {
+        $open = Carbon::parse('monday', $this->timezone);
+
+        if ($this->day !== Carbon::MONDAY) {
+            $open->next($this->day);
+        }
+
+        $open->setTime($this->openHour(), $this->openMinute());
+
+        return $open;
+    }
+
+    protected function openHour()
+    {
+        return substr($this->time, 0, strpos($this->time, ':'));
+    }
+
+    public function openMinute()
+    {
+        return substr($this->time, strpos($this->time, ':') + 1);
     }
 
     /**
@@ -276,7 +296,6 @@ class Opening
      * Checks if an opening touches another opening.
      *
      * @param  BusinessCalendar\Opening $opening
-     *
      * @return bool
      */
     protected function touch(Opening $opening)

@@ -31,7 +31,6 @@ class WorkingWeekSpec extends ObjectBehavior
         $opening = new Opening(Carbon::TUESDAY, '8:00', 8*3600);
         $this->addOpening($opening);
         $this->countOpenings()->shouldReturn(2);
-
     }
 
     function it_removes_openings()
@@ -68,31 +67,36 @@ class WorkingWeekSpec extends ObjectBehavior
         $this->isOpenAt(Carbon::parse('monday 7:00', 'Europe/Paris'))->shouldReturn(false);
         $this->isOpenAt(Carbon::parse('monday 9:00', 'Europe/Paris'))->shouldReturn(true);
 
-        $opening2 = new Opening(Carbon::MONDAY, '12:00', 8*3600);
-        $this->addOpening($opening2);
-        $this->countOpenings()->shouldReturn(1);
-        $this->isOpenAt(Carbon::parse('monday 7:00', 'Europe/Paris'))->shouldReturn(false);
-        $this->isOpenAt(Carbon::parse('monday 9:00', 'Europe/Paris'))->shouldReturn(true);
-        $this->isOpenAt(Carbon::parse('monday 13:00', 'Europe/Paris'))->shouldReturn(true);
-        $this->isOpenAt(Carbon::parse('monday 19:00', 'Europe/Paris'))->shouldReturn(true);
-        $this->isOpenAt(Carbon::parse('tuesday 08:10', 'Europe/Paris'))->shouldReturn(false);
+        // $opening2 = new Opening(Carbon::MONDAY, '12:00', 8*3600);
+        // $this->addOpening($opening2);
+        // $this->countOpenings()->shouldReturn(1);
+        // $this->isOpenAt(Carbon::parse('monday 7:00', 'Europe/Paris'))->shouldReturn(false);
+        // $this->isOpenAt(Carbon::parse('monday 9:00', 'Europe/Paris'))->shouldReturn(true);
+        // $this->isOpenAt(Carbon::parse('monday 13:00', 'Europe/Paris'))->shouldReturn(true);
+        // $this->isOpenAt(Carbon::parse('monday 19:00', 'Europe/Paris'))->shouldReturn(true);
+        // $this->isOpenAt(Carbon::parse('tuesday 08:10', 'Europe/Paris'))->shouldReturn(false);
 
-        $opening3 = new Opening(Carbon::MONDAY, '07:00', 2*3600);
-        $this->addOpening($opening3);
-        $this->countOpenings()->shouldReturn(1);
-        $this->isOpenAt(Carbon::parse('monday 07:05', 'Europe/Paris'))->shouldReturn(true);
+        // $opening3 = new Opening(Carbon::MONDAY, '07:00', 2*3600);
+        // $this->addOpening($opening3);
+        // $this->countOpenings()->shouldReturn(1);
+        // $this->isOpenAt(Carbon::parse('monday 07:05', 'Europe/Paris'))->shouldReturn(true);
 
         $opening4 = new Opening(Carbon::MONDAY, '06:00', 24*3600);
         $this->addOpening($opening4);
         $this->countOpenings()->shouldReturn(1);
         $this->isOpenAt(Carbon::parse('tuesday 03:35', 'Europe/Paris'))->shouldReturn(true);
 
-        $opening5 = new Opening(Carbon::TUESDAY, '08:00', 24*3600);
-        $this->addOpening($opening5);
-        $this->countOpenings()->shouldReturn(2);
+        // $opening5 = new Opening(Carbon::TUESDAY, '08:00', 24*3600);
+        // $this->addOpening($opening5);
+        // $this->countOpenings()->shouldReturn(2);
 
-        $opening6 = new Opening(Carbon::TUESDAY, '05:00', 4*3600);
-        $this->addOpening($opening6);
-        $this->countOpenings()->shouldReturn(1);
+        // $opening6 = new Opening(Carbon::TUESDAY, '05:00', 4*3600);
+        // $this->addOpening($opening6);
+        // $this->countOpenings()->shouldReturn(1);
     }
+
+    // function it_checks_for_an_opening_regardless_of_the_date()
+    // {
+    //     # code...
+    // }
 }
