@@ -87,16 +87,16 @@ class Opening
      * @param string  $start
      * @param integer $length
      */
-    public function __construct($day, $time, $length, $timezone = 'Europe/Paris')
+    public function __construct($arguments)
     {
-        if ($length > static::$lengths['WEEK']) {
+        if ($arguments['length'] > static::$lengths['WEEK']) {
             throw new InvalidArgumentException('The length of the Opening cannot exceed a week');
         }
 
-        $this->day = $day;
-        $this->time = $time;
-        $this->length = $length;
-        $this->timezone = $timezone;
+        $this->day = $arguments['day'];
+        $this->time = $arguments['time'];
+        $this->length = $arguments['length'];
+        $this->timezone = isset($arguments['timezone']) ? $arguments['timezone'] : 'Europe/Paris';
 
         $this->setCarbonInstances();
     }
@@ -130,11 +130,7 @@ class Opening
      */
     public function overlaps(Opening $opening)
     {
-        if ($this->touch($opening)) {
-            return true;
-        }
-
-        return false;
+        return $this->touch($opening) || $this->touch($opening->lastWeek());
     }
 
     /**
@@ -169,7 +165,10 @@ class Opening
      */
     public function lastWeek()
     {
-        $lastWeek =  new Opening($this->day, $this->time, $this->length, $this->timezone);
+        $lastWeek =  new Opening([
+            'day' => $this->day, 'time' => $this->time, 'length' => $this->length, 'timezone' => $this->timezone
+        ]);
+
         $lastWeek->moveOpening($lastWeek->opensAt()->subWeek());
 
         return $lastWeek;
@@ -195,16 +194,6 @@ class Opening
         return $this->updated = $boolean;
     }
 
-    // /**
-    //  * The Opening has been merged with another Opening.
-    //  *
-    //  * @return boolean
-    //  */
-    // public function hasBeenMerged()
-    // {
-    //     return $this->merged;
-    // }
-
     /**
      * Set the Merged flag.
      *
@@ -223,8 +212,8 @@ class Opening
      */
     public function isOpenAt(Carbon $time)
     {
-        return $time->between($this->opensAt, $this->closesAt)
-            || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
+        return $time->between($this->opensAt, $this->closesAt);
+            // || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
     }
 
     /**
@@ -242,10 +231,16 @@ class Opening
      */
     protected function setCarbonInstances()
     {
+
         $this->opensAt = $this->setOpenDate();
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
     }
 
+    /**
+     * Set the open date.
+     *
+     * @return  Carbon\Carbon
+     */
     protected function setOpenDate()
     {
         $open = Carbon::parse('monday', $this->timezone);
@@ -259,12 +254,22 @@ class Opening
         return $open;
     }
 
+    /**
+     * Get the hour at which the Opening start.
+     *
+     * @return integer
+     */
     protected function openHour()
     {
         return substr($this->time, 0, strpos($this->time, ':'));
     }
 
-    public function openMinute()
+    /**
+     * Get the minute at which the Opening start.
+     *
+     * @return integer
+     */
+    protected function openMinute()
     {
         return substr($this->time, strpos($this->time, ':') + 1);
     }

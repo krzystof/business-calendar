@@ -3,4 +3,4 @@ suites:
         namespace: BusinessCalendar
         psr4_prefix: BusinessCalendar
 
-formatter.name: pretty
+# formatter.name: pretty
