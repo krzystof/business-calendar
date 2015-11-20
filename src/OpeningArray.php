@@ -36,9 +36,9 @@ class OpeningArray implements OpeningCollection
 
     public function save()
     {
-        foreach($this->openings as $opening) {
-            $opening->setUpdated(false);
-        }
+        // foreach($this->openings as $opening) {
+        //     $opening->setUpdated(false);
+        // }
     }
 
     public function rewind()
@@ -74,5 +74,10 @@ class OpeningArray implements OpeningCollection
     public function toJson()
     {
         return json_encode($this->openings);
+    }
+
+    public function map(callable $callback)
+    {
+        return array_map($callback, $this->openings);
     }
 }

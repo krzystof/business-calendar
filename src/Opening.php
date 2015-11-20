@@ -5,7 +5,7 @@ namespace BusinessCalendar;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
-class Opening
+class Opening implements DateRange
 {
     /**
      * The day of the week the Opening starts.
@@ -153,9 +153,6 @@ class Opening
         if ($this->opensAt() > $opening->opensAt()) {
             $this->opensAt = $opening->opensAt();
         }
-
-        $this->setUpdated(true);
-        $opening->setMerged(true);
     }
 
     /**
@@ -175,36 +172,6 @@ class Opening
     }
 
     /**
-     * The Opening has been updated.
-     *
-     * @return boolean
-     */
-    public function hasBeenUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set the updated flag.
-     *
-     * @param bool $boolean
-     */
-    public function setUpdated($boolean)
-    {
-        return $this->updated = $boolean;
-    }
-
-    /**
-     * Set the Merged flag.
-     *
-     * @param bool $boolean
-     */
-    public function setMerged($boolean)
-    {
-        return $this->merged = $boolean;
-    }
-
-    /**
      * Check if the opening is Open at a given timestamp.
      *
      * @param  Carbon\Carbon  $time
@@ -213,7 +180,6 @@ class Opening
     public function isOpenAt(Carbon $time)
     {
         return $time->between($this->opensAt, $this->closesAt);
-            // || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
     }
 
     /**
