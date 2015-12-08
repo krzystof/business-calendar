@@ -172,14 +172,15 @@ class Opening implements DateRange
     }
 
     /**
-     * Check if the opening is Open at a given timestamp.
+     * Check if the opening is open at a given timestamp.
      *
      * @param  Carbon\Carbon  $time
      * @return boolean
      */
     public function isOpenAt(Carbon $time)
     {
-        return $time->between($this->opensAt, $this->closesAt);
+        return $time->between($this->opensAt, $this->closesAt)
+            || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
     }
 
     /**

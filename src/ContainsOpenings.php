@@ -46,8 +46,9 @@ trait ContainsOpenings
         }
 
         $previous = $this->openings->last();
-
+        // die(var_dump($this));
         foreach ($this->openings as $key => $opening) {
+            // var_dump($opening);
             if ($opening->overlaps($previous)) {
                 $previous->merges($opening);
                 $this->deleteOpening($key);
