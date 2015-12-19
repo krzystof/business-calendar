@@ -18,5 +18,8 @@
     },
     "require": {
         "nesbot/carbon": "~1.14"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "^2.4"
     }
 }

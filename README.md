@@ -1,5 +1,9 @@
 ## business-calendar
-[![Latest Stable Version](https://poser.pugx.org/krzystof/business-calendar/v/stable)](https://packagist.org/packages/krzystof/business-calendar) [![Total Downloads](https://poser.pugx.org/krzystof/business-calendar/downloads)](https://packagist.org/packages/krzystof/business-calendar) [![Latest Unstable Version](https://poser.pugx.org/krzystof/business-calendar/v/unstable)](https://packagist.org/packages/krzystof/business-calendar) [![License](https://poser.pugx.org/krzystof/business-calendar/license)](https://packagist.org/packages/krzystof/business-calendar)
+[![Latest Stable Version](https://poser.pugx.org/krzystof/business-calendar/v/stable)](https://packagist.org/packages/krzystof/business-calendar)
+[![Total Downloads](https://poser.pugx.org/krzystof/business-calendar/downloads)](https://packagist.org/packages/krzystof/business-calendar)
+[![Latest Unstable Version](https://poser.pugx.org/krzystof/business-calendar/v/unstable)](https://packagist.org/packages/krzystof/business-calendar)
+[![License](https://poser.pugx.org/krzystof/business-calendar/license)](https://packagist.org/packages/krzystof/business-calendar)
+[![Build Status](https://travis-ci.org/krzystof/business-calendar.svg)](https://travis-ci.org/krzystof/business-calendar)
 
 Manage a business calendar with a working week, openings and events.
 
