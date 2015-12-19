@@ -2,11 +2,13 @@
     "name": "krzystof/business-calendar",
     "description": "Manage working hours and events in a business calendar",
     "type": "library",
+    "homepage": "https://github.com/krzystof/business-calendar",
     "license": "MIT",
     "authors": [
         {
             "name": "Christophe Graniczny",
-            "email": "getintouch@christophegraniczny.com"
+            "email": "getintouch@christophegraniczny.com",
+            "homepage": "christophegraniczny.com"
         }
     ],
     "autoload": {
