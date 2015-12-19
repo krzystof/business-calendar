@@ -62,7 +62,6 @@ class OpeningParser
     {
         foreach ($this->fragments as $fragment) {
             if ($fragment->isTime()) {
-
                 return Carbon::parse($fragment);
             }
         }

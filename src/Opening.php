@@ -136,7 +136,6 @@ class Opening implements DateRange
      * Merge two Opening together.
      *
      * @param  BusinessCalendar\Opening  $opening
-
      */
     public function merges(Opening $opening)
     {
@@ -160,7 +159,7 @@ class Opening implements DateRange
      */
     public function lastWeek()
     {
-        $lastWeek =  new self([
+        $lastWeek = new self([
             'day' => $this->day,
             'time' => $this->time,
             'length' => $this->length,
