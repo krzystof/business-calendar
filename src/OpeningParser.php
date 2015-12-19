@@ -3,7 +3,6 @@
 namespace BusinessCalendar;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterval;
 
 class OpeningParser
 {
@@ -30,7 +29,7 @@ class OpeningParser
     {
         $words = explode(' ', $input);
 
-        foreach($words as $word) {
+        foreach ($words as $word) {
             $this->fragments[] = $this->grammar->translate($word);
         }
     }
@@ -71,7 +70,7 @@ class OpeningParser
 
     protected function getLength()
     {
-        foreach(array_reverse($this->fragments) as $fragment) {
+        foreach (array_reverse($this->fragments) as $fragment) {
             if ($fragment->isTime()) {
                 return Carbon::parse($fragment)->diffInSeconds($this->getOpenTime());
             }

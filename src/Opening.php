@@ -10,7 +10,7 @@ class Opening implements DateRange
     /**
      * The day of the week the Opening starts.
      *
-     * @var integer
+     * @var int
      */
     protected $day;
 
@@ -24,7 +24,7 @@ class Opening implements DateRange
     /**
      * The length of the opening.
      *
-     * @var integer
+     * @var int
      */
     protected $length;
 
@@ -45,14 +45,14 @@ class Opening implements DateRange
     /**
      * The Opening has been updated.
      *
-     * @var boolean
+     * @var bool
      */
     protected $updated = false;
 
     /**
      * The Opening has been merged.
      *
-     * @var boolean
+     * @var bool
      */
     protected $merged = false;
 
@@ -62,22 +62,24 @@ class Opening implements DateRange
      * @var array
      */
     protected static $days = [
-        Carbon::SUNDAY => 'Sunday',
-        Carbon::MONDAY => 'Monday',
-        Carbon::TUESDAY => 'Tuesday',
+        Carbon::SUNDAY    => 'Sunday',
+        Carbon::MONDAY    => 'Monday',
+        Carbon::TUESDAY   => 'Tuesday',
         Carbon::WEDNESDAY => 'Wednesday',
-        Carbon::THURSDAY => 'Thursday',
-        Carbon::FRIDAY => 'Friday',
-        Carbon::SATURDAY => 'Saturday',
+        Carbon::THURSDAY  => 'Thursday',
+        Carbon::FRIDAY    => 'Friday',
+        Carbon::SATURDAY  => 'Saturday',
     ];
 
     /**
-     * Common length in seconds.
+     * Common lengths in seconds.
      *
      * @var array
      */
     protected static $lengths = [
-        'WEEK' => 7 * 24 * 3600
+        'WEEK' => 604800,
+        'DAY'  => 86400,
+        'HOUR' => 3600,
     ];
 
     /**
@@ -125,7 +127,6 @@ class Opening implements DateRange
      * Check wether the Opening overlaps the other opening.
      *
      * @param  BusinessCalendar\Opening $opening
-     *
      * @return boolean
      */
     public function overlaps(Opening $opening)
@@ -137,7 +138,6 @@ class Opening implements DateRange
      * Merge two Opening together.
      *
      * @param  BusinessCalendar\Opening  $opening
-     *
      * @return void
      */
     public function merges(Opening $opening)
@@ -175,7 +175,7 @@ class Opening implements DateRange
      * Check if the opening is open at a given timestamp.
      *
      * @param  Carbon\Carbon  $time
-     * @return boolean
+     * @return bool
      */
     public function isOpenAt(Carbon $time)
     {
@@ -198,7 +198,6 @@ class Opening implements DateRange
      */
     protected function setCarbonInstances()
     {
-
         $this->opensAt = $this->setOpenDate();
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
     }
@@ -224,7 +223,7 @@ class Opening implements DateRange
     /**
      * Get the hour at which the Opening start.
      *
-     * @return integer
+     * @return int
      */
     protected function openHour()
     {
@@ -234,7 +233,7 @@ class Opening implements DateRange
     /**
      * Get the minute at which the Opening start.
      *
-     * @return integer
+     * @return int
      */
     protected function openMinute()
     {
@@ -245,7 +244,7 @@ class Opening implements DateRange
      * Checks if the opening is contained in another opening.
      *
      * @param  BusinessCalendar\Opening $opening
-     * @return boolean
+     * @return bool
      */
     protected function isContainedIn(Opening $opening)
     {

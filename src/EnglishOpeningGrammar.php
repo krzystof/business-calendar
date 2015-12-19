@@ -7,13 +7,13 @@ class EnglishOpeningGrammar implements OpeningGrammar
     protected $word;
 
     protected $days = [
-        'sunday' => 0,
-        'monday' => 1,
-        'tuesday' => 2,
+        'sunday'    => 0,
+        'monday'    => 1,
+        'tuesday'   => 2,
         'wednesday' => 3,
-        'thursday' => 4,
-        'friday' => 5,
-        'saturday' => 6,
+        'thursday'  => 4,
+        'friday'    => 5,
+        'saturday'  => 6,
     ];
 
     public function __construct($word = '')

@@ -2,8 +2,6 @@
 
 namespace BusinessCalendar;
 
-use Carbon\Carbon;
-
 class WorkingWeek
 {
     use ContainsOpenings;

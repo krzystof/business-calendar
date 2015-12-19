@@ -14,7 +14,7 @@ class OpeningSpec extends ObjectBehavior
         $this->beConstructedWith([
             'day'    => Carbon::TUESDAY,
             'time'   => '10:00',
-            'length' => 4*3600
+            'length' => 4 * 3600
         ]);
     }
 

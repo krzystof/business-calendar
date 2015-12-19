@@ -10,7 +10,7 @@ trait ContainsOpenings
      * Check wether the working week is open at a given timestamp.
      *
      * @param  Datetime  $timestamp
-     * @return boolean
+     * @return bool
      */
     public function isOpenAt(Carbon $timestamp)
     {
@@ -26,7 +26,7 @@ trait ContainsOpenings
     /**
      * Count how many openings the working week contains.
      *
-     * @return integer
+     * @return int
      */
     public function countOpenings()
     {

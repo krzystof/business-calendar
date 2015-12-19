@@ -6,4 +6,3 @@ interface OpeningGrammar
 {
     public function translate($word);
 }
-
