@@ -2,6 +2,9 @@
 
 namespace spec\BusinessCalendar;
 
+use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
+use BusinessCalendar\OpeningCollection;
 use BusinessCalendar\EnglishOpeningGrammar;
 
 class OpeningParserSpec extends ObjectBehavior
