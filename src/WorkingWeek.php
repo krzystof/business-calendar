@@ -34,7 +34,7 @@ class WorkingWeek
     /**
      * Add an opening to the working week.
      *
-     * @param Opening $opening
+     * @param BusinessCalendar\Opening $opening
      */
     public function addOpening(Opening $opening)
     {
@@ -45,7 +45,7 @@ class WorkingWeek
     /**
      * Delete an opening from the working week.
      *
-     * @param  integer $key
+     * @param  int $key
      */
     public function deleteOpening($key)
     {

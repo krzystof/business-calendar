@@ -45,7 +45,7 @@ class OpeningParser
             'day' => $this->getDay(),
             'time' => $this->getOpenTime()->format('h:i'),
             'length' => $this->getLength(),
-            'timezone' => $this->timezone
+            'timezone' => $this->timezone,
         ];
     }
 

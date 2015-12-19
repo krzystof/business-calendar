@@ -85,9 +85,7 @@ class Opening implements DateRange
     /**
      * Create a new Opening.
      *
-     * @param integer $day
-     * @param string  $start
-     * @param integer $length
+     * @param array $arguments
      */
     public function __construct($arguments)
     {
@@ -114,7 +112,7 @@ class Opening implements DateRange
     }
 
     /**
-     * get the closing of the Opening.
+     * Get the closing of the Opening.
      *
      * @return Carbon\Carbon
      */
@@ -127,7 +125,7 @@ class Opening implements DateRange
      * Check wether the Opening overlaps the other opening.
      *
      * @param  BusinessCalendar\Opening $opening
-     * @return boolean
+     * @return bool
      */
     public function overlaps(Opening $opening)
     {
@@ -138,7 +136,7 @@ class Opening implements DateRange
      * Merge two Opening together.
      *
      * @param  BusinessCalendar\Opening  $opening
-     * @return void
+
      */
     public function merges(Opening $opening)
     {
@@ -162,8 +160,11 @@ class Opening implements DateRange
      */
     public function lastWeek()
     {
-        $lastWeek =  new Opening([
-            'day' => $this->day, 'time' => $this->time, 'length' => $this->length, 'timezone' => $this->timezone
+        $lastWeek =  new self([
+            'day' => $this->day,
+            'time' => $this->time,
+            'length' => $this->length,
+            'timezone' => $this->timezone,
         ]);
 
         $lastWeek->moveOpening($lastWeek->opensAt()->subWeek());
