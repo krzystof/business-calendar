@@ -77,7 +77,7 @@ class Opening implements DateRange
      * @var array
      */
     protected static $lengths = [
-        'WEEK' => 7 * 24 * 3600,
+        'WEEK' => 7 * 24 * 3600
     ];
 
     /**
