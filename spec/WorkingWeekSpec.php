@@ -116,7 +116,7 @@ class WorkingWeekSpec extends ObjectBehavior
     {
         $this->addOpening(new Opening([
             'day' => Carbon::now()->dayOfWeek,
-            'time' => Carbon::now()->subHour()->format('h:i'),
+            'time' => Carbon::now('Europe/Paris')->subHour()->format('H:i'),
             'length' => 4 * 3600
         ]));
 
