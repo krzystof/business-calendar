@@ -1,9 +1,11 @@
-# business-calendar
+## business-calendar
+[![Latest Stable Version](https://poser.pugx.org/krzystof/business-calendar/v/stable)](https://packagist.org/packages/krzystof/business-calendar) [![Total Downloads](https://poser.pugx.org/krzystof/business-calendar/downloads)](https://packagist.org/packages/krzystof/business-calendar) [![Latest Unstable Version](https://poser.pugx.org/krzystof/business-calendar/v/unstable)](https://packagist.org/packages/krzystof/business-calendar) [![License](https://poser.pugx.org/krzystof/business-calendar/license)](https://packagist.org/packages/krzystof/business-calendar)
+
 Manage a business calendar with a working week, openings and events.
 
-## API
+### API
 
-## Calendar
+#### Calendar
 **In progress**
 
 ```php
@@ -44,8 +46,8 @@ $opening1->overlaps($opening2); // -> returns bool
 $opening1->merge($opening2);
 ```
 
-## Events
+### Events
 In progress
 
-## Task
+### Task
 In progress
