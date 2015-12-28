@@ -50,28 +50,6 @@ class Opening implements DateRange
     protected $updated = false;
 
     /**
-     * The Opening has been merged.
-     *
-     * @var bool
-     */
-    protected $merged = false;
-
-    /**
-     * Names of days of the week.
-     *
-     * @var array
-     */
-    protected static $days = [
-        Carbon::SUNDAY    => 'Sunday',
-        Carbon::MONDAY    => 'Monday',
-        Carbon::TUESDAY   => 'Tuesday',
-        Carbon::WEDNESDAY => 'Wednesday',
-        Carbon::THURSDAY  => 'Thursday',
-        Carbon::FRIDAY    => 'Friday',
-        Carbon::SATURDAY  => 'Saturday',
-    ];
-
-    /**
      * Common lengths in seconds.
      *
      * @var array
@@ -181,6 +159,11 @@ class Opening implements DateRange
     {
         return $time->between($this->opensAt, $this->closesAt)
             || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
+    }
+
+    public static function dayOfWeek($dayOfWeek)
+    {
+        return Carbon::parse($dayOfWeek)->dayOfWeek;
     }
 
     /**

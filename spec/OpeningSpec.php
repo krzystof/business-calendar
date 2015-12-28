@@ -88,4 +88,11 @@ class OpeningSpec extends ObjectBehavior
 
         $this->shouldThrow('\InvalidArgumentException')->duringInstantiation();
     }
+
+    function it_gets_the_constant_value_for_the_day_of_the_week()
+    {
+        static::dayOfWeek('monday')->shouldReturn(1);
+        static::dayOfWeek('sunday')->shouldReturn(0);
+        static::dayOfWeek('Tuesday')->shouldReturn(2);
+    }
 }

@@ -26,11 +26,14 @@ $scheduledTask->end();
 
 #### Working Week
 ```php
-$workingWeek->addOpening($opening1);
+$workingWeek->addOpening(new Opening([
+    'day' => Carbon::MONDAY, 'time' => '06:00', 'length' => 12 * 3600
+]));
 $workingWeek->addOpening($opening2);
 
-$workingWeek->countOpenings();          // -> returns 2
+$workingWeek->countOpenings();           // -> returns 2
 $workingWeek->isOpenAt(Carbon::now());   // -> returns bool
+
 ```
 <!-- r using a parser included: **This is currently in development**
 ```php
@@ -50,6 +53,9 @@ $opening->closesAt(); // Return a Carbon instance
 $opening1->overlaps($opening2); // -> returns bool
 // Merge them:
 $opening1->merge($opening2);
+
+// Get the day value to instantiate an opening
+Opening::dayOfWeek('monday') // -> returns 1
 ```
 
 ### Events
