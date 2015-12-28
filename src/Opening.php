@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 class Opening implements Compilable, Mergeable
 {
-    use MergesOpening;
+    use CanBeCompiled, CompareWithOpening;
 
     /**
      * The day of the week the Opening starts.
@@ -141,31 +141,6 @@ class Opening implements Compilable, Mergeable
     }
 
     /**
-     * Check if the opening is open at a given timestamp.
-     *
-     * @param  Carbon\Carbon  $time
-     * @return bool
-     */
-    public function isOpenAt(Carbon $time)
-    {
-        return $time->between($this->opensAt, $this->closesAt)
-            || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
-    }
-
-    /**
-     * Checks if an opening touches another opening.
-     *
-     * @param  BusinessCalendar\Opening $opening
-     * @return bool
-     */
-    public function touch(Opening $opening)
-    {
-        return $this->isOpenAt($opening->opensAt())
-            || $this->isOpenAt($opening->closesAt())
-            || $this->isContainedIn($opening);
-    }
-
-    /**
      * Get the integer value of the day of the week.
      *
      * @param  string $dayOfWeek
@@ -231,17 +206,6 @@ class Opening implements Compilable, Mergeable
     protected function openMinute()
     {
         return substr($this->time, strpos($this->time, ':') + 1);
-    }
-
-    /**
-     * Checks if the opening is contained in another opening.
-     *
-     * @param  BusinessCalendar\Opening $opening
-     * @return bool
-     */
-    public function isContainedIn(Opening $opening)
-    {
-        return $opening->isOpenAt($this->opensAt()) && $opening->isOpenAt($this->closesAt());
     }
 
     /**
