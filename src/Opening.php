@@ -5,7 +5,7 @@ namespace BusinessCalendar;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
-class Opening implements DateRange
+class Opening implements MergesOpening
 {
     /**
      * The day of the week the Opening starts.

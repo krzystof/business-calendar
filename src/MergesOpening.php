@@ -2,7 +2,7 @@
 
 namespace BusinessCalendar;
 
-interface DateRange
+interface MergesOpening
 {
     public function overlaps(Opening $opening);
 
