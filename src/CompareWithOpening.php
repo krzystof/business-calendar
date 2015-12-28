@@ -24,7 +24,7 @@ trait CompareWithOpening
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    protected function covers(Opening $opening)
+    protected function covers(Openingable $opening)
     {
         return $this->isOpenAt($opening->opensAt())
             || $this->isOpenAt($opening->closesAt())
@@ -37,7 +37,7 @@ trait CompareWithOpening
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    protected function isContainedIn(Opening $opening)
+    protected function isContainedIn(Openingable $opening)
     {
         return $opening->isOpenAt($this->opensAt()) && $opening->isOpenAt($this->closesAt());
     }

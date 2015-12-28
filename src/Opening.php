@@ -5,7 +5,7 @@ namespace BusinessCalendar;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
-class Opening implements Compilable, Mergeable
+class Opening implements Openingable
 {
     use CanBeCompiled, CompareWithOpening;
 

@@ -4,7 +4,7 @@ namespace BusinessCalendar;
 
 interface Compilable
 {
-    public function overlaps(Opening $opening);
+    public function overlaps(Mergeable $opening);
 
-    public function merges(Opening $opening);
+    public function merges(Mergeable $opening);
 }

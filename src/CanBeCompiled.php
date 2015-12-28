@@ -10,7 +10,7 @@ trait CanBeCompiled
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    public function overlaps(Opening $opening)
+    public function overlaps(Mergeable $opening)
     {
         return $this->covers($opening) || $this->covers($opening->lastWeek());
     }
@@ -20,18 +20,16 @@ trait CanBeCompiled
      *
      * @param  BusinessCalendar\Opening  $opening
      */
-    public function merges(Opening $opening)
+    public function merges(Mergeable $opening)
     {
         if (! $this->overlaps($opening)) {
             return;
         }
 
-        // @todo refactor to ! $this->isOpenAt($opening->closesAt())
-        if ($this->closesAt() < $opening->closesAt()) {
+        if ($this->closesAt() < $opening->closesAt) {
             $this->setClosesAt($opening->closesAt());
         }
 
-        // @todo refactor to $this->openAfter($opening)
         if ($this->opensAt() > $opening->opensAt()) {
             $this->setOpensAt($opening->opensAt());
         }
