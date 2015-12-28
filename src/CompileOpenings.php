@@ -4,25 +4,8 @@ namespace BusinessCalendar;
 
 use Carbon\Carbon;
 
-trait ContainsOpenings
+trait CompileOpenings
 {
-    /**
-     * Check wether the working week is open at a given timestamp.
-     *
-     * @param  Datetime  $timestamp
-     * @return bool
-     */
-    public function isOpenAt(Carbon $timestamp)
-    {
-        foreach ($this->openings as $opening) {
-            if ($opening->isOpenAt($timestamp)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Count how many openings the working week contains.
      *

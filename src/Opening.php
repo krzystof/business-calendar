@@ -5,8 +5,10 @@ namespace BusinessCalendar;
 use Carbon\Carbon;
 use InvalidArgumentException;
 
-class Opening implements MergesOpening
+class Opening implements Compilable, Mergeable
 {
+    use MergesOpening;
+
     /**
      * The day of the week the Opening starts.
      *
@@ -90,6 +92,16 @@ class Opening implements MergesOpening
     }
 
     /**
+     * Set the opensAt attribute.
+     *
+     * @param Carbon $timestamp
+     */
+    public function setOpensAt(Carbon $timestamp)
+    {
+        return $this->opensAt = $timestamp;
+    }
+
+    /**
      * Get the closing of the Opening.
      *
      * @return Carbon\Carbon
@@ -100,34 +112,13 @@ class Opening implements MergesOpening
     }
 
     /**
-     * Check wether the Opening overlaps the other opening.
+     * Set the closesAt attribute.
      *
-     * @param  BusinessCalendar\Opening $opening
-     * @return bool
+     * @param Carbon $timestamp
      */
-    public function overlaps(Opening $opening)
+    public function setClosesAt(Carbon $timestamp)
     {
-        return $this->touch($opening) || $this->touch($opening->lastWeek());
-    }
-
-    /**
-     * Merge two Opening together.
-     *
-     * @param  BusinessCalendar\Opening  $opening
-     */
-    public function merges(Opening $opening)
-    {
-        if (! $this->overlaps($opening)) {
-            return;
-        }
-
-        if ($this->closesAt() < $opening->closesAt()) {
-            $this->closesAt = $opening->closesAt();
-        }
-
-        if ($this->opensAt() > $opening->opensAt()) {
-            $this->opensAt = $opening->opensAt();
-        }
+        return $this->closesAt = $timestamp;
     }
 
     /**
@@ -161,6 +152,25 @@ class Opening implements MergesOpening
             || $time->copy()->addWeek()->between($this->opensAt, $this->closesAt);
     }
 
+    /**
+     * Checks if an opening touches another opening.
+     *
+     * @param  BusinessCalendar\Opening $opening
+     * @return bool
+     */
+    public function touch(Opening $opening)
+    {
+        return $this->isOpenAt($opening->opensAt())
+            || $this->isOpenAt($opening->closesAt())
+            || $this->isContainedIn($opening);
+    }
+
+    /**
+     * Get the integer value of the day of the week.
+     *
+     * @param  string $dayOfWeek
+     * @return integer
+     */
     public static function dayOfWeek($dayOfWeek)
     {
         return Carbon::parse($dayOfWeek)->dayOfWeek;
@@ -229,7 +239,7 @@ class Opening implements MergesOpening
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    protected function isContainedIn(Opening $opening)
+    public function isContainedIn(Opening $opening)
     {
         return $opening->isOpenAt($this->opensAt()) && $opening->isOpenAt($this->closesAt());
     }
@@ -244,18 +254,5 @@ class Opening implements MergesOpening
     {
         $this->opensAt = $timestamp;
         $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
-    }
-
-    /**
-     * Checks if an opening touches another opening.
-     *
-     * @param  BusinessCalendar\Opening $opening
-     * @return bool
-     */
-    protected function touch(Opening $opening)
-    {
-        return $this->isOpenAt($opening->opensAt())
-            || $this->isOpenAt($opening->closesAt())
-            || $this->isContainedIn($opening);
     }
 }

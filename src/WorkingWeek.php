@@ -2,9 +2,11 @@
 
 namespace BusinessCalendar;
 
+use Carbon\Carbon;
+
 class WorkingWeek
 {
-    use ContainsOpenings;
+    use CompileOpenings;
 
     /**
      * An Collection of Openings for the working week.
@@ -29,6 +31,23 @@ class WorkingWeek
     {
         $this->openings = $openings;
         $this->timezone = $timezone;
+    }
+
+    /**
+     * Check wether the working week is open at a given timestamp.
+     *
+     * @param  Datetime  $timestamp
+     * @return bool
+     */
+    public function isOpenAt(Carbon $timestamp)
+    {
+        foreach ($this->openings as $opening) {
+            if ($opening->isOpenAt($timestamp)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

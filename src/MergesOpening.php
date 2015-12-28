@@ -2,9 +2,36 @@
 
 namespace BusinessCalendar;
 
-interface MergesOpening
+trait MergesOpening
 {
-    public function overlaps(Opening $opening);
+    /**
+     * Check wether the Opening overlaps the other opening.
+     *
+     * @param  BusinessCalendar\Opening $opening
+     * @return bool
+     */
+    public function overlaps(Opening $opening)
+    {
+        return $this->touch($opening) || $this->touch($opening->lastWeek());
+    }
 
-    public function merges(Opening $opening);
+    /**
+     * Merge two Opening together.
+     *
+     * @param  BusinessCalendar\Opening  $opening
+     */
+    public function merges(Opening $opening)
+    {
+        if (! $this->overlaps($opening)) {
+            return;
+        }
+
+        if ($this->closesAt() < $opening->closesAt()) {
+            $this->setClosesAt($opening->closesAt());
+        }
+
+        if ($this->opensAt() > $opening->opensAt()) {
+            $this->setOpensAt($opening->opensAt());
+        }
+    }
 }
