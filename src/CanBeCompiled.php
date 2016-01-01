@@ -26,12 +26,31 @@ trait CanBeCompiled
             return;
         }
 
-        if ($this->closesAt() < $opening->closesAt) {
+        if ($this->closesAt() < $opening->closesAt()) {
             $this->setClosesAt($opening->closesAt());
         }
 
         if ($this->opensAt() > $opening->opensAt()) {
             $this->setOpensAt($opening->opensAt());
         }
+    }
+
+    /**
+     * Clone the opening set to the previous week dates.
+     *
+     * @return BusinessCalendar\Opening
+     */
+    public function lastWeek()
+    {
+        $lastWeek = new static([
+            'day'      => $this->day,
+            'time'     => $this->time,
+            'length'   => $this->length,
+            'timezone' => $this->timezone,
+        ]);
+
+        $lastWeek->moveOpening($lastWeek->opensAt()->subWeek());
+
+        return $lastWeek;
     }
 }
