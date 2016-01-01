@@ -37,9 +37,15 @@ class WorkingWeekSpec extends ObjectBehavior
 
     function it_removes_openings()
     {
-        $this->deleteOpening(0);
+        $opening = new Opening([
+            'day' => Carbon::WEDNESDAY, 'time' => '8:00', 'length' => 8*3600
+        ]);
 
-        $this->countOpenings()->shouldReturn(0);
+        $this->addOpening($opening);
+
+        $this->deleteOpening($opening);
+
+        $this->countOpenings()->shouldReturn(1);
     }
 
     function it_flushes_openings()

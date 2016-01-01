@@ -27,10 +27,12 @@ trait CompileOpenings
         }
 
         $previous = $this->openings->last();
-        foreach ($this->openings as $key => $opening) {
+
+        foreach ($this->openings as $opening) {
             if ($opening->overlaps($previous)) {
                 $previous->merges($opening);
-                $this->deleteOpening($key);
+
+                $this->deleteOpening($opening);
 
                 return $this->compileOpenings();
             }

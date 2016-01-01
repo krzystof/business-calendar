@@ -24,9 +24,11 @@ class OpeningArray implements OpeningCollection
         return count($this->openings);
     }
 
-    public function delete($key)
+    public function delete($opening)
     {
-        array_splice($this->openings, $key, 1);
+        $keyToDelete = array_search($opening, $this->openings);
+
+        array_splice($this->openings, $keyToDelete, 1);
     }
 
     public function isEmpty()
@@ -36,9 +38,7 @@ class OpeningArray implements OpeningCollection
 
     public function save()
     {
-        // foreach($this->openings as $opening) {
-        //     $opening->setUpdated(false);
-        // }
+        return true;
     }
 
     public function rewind()

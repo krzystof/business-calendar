@@ -58,6 +58,7 @@ class WorkingWeek
     public function addOpening(Opening $opening)
     {
         $this->openings->add($opening);
+
         $this->compileOpenings();
     }
 
@@ -66,9 +67,9 @@ class WorkingWeek
      *
      * @param  int $key
      */
-    public function deleteOpening($key)
+    public function deleteOpening(Opening $opening)
     {
-        $this->openings->delete($key);
+        $this->openings->delete($opening);
     }
 
     /**
@@ -78,8 +79,8 @@ class WorkingWeek
      */
     public function flushOpenings()
     {
-        foreach ($this->openings as $key => $opening) {
-            $this->deleteOpening($key);
+        foreach ($this->openings as $opening) {
+            $this->deleteOpening($opening);
         }
     }
 }
