@@ -69,7 +69,7 @@ class Opening implements Openingable
      * Get the integer value of the day of the week.
      *
      * @param  string $dayOfWeek
-     * @return integer
+     * @return int
      */
     public static function dayOfWeek($dayOfWeek)
     {
@@ -84,17 +84,5 @@ class Opening implements Openingable
     public function __toString()
     {
         return $this->opensAt().' '.$this->closesAt();
-    }
-
-    /**
-     * Move an opening to a given timestamp.
-     *
-     * @param  Carbon $timestamp
-     * @return void
-     */
-    protected function moveOpening(Carbon $timestamp)
-    {
-        $this->opensAt = $timestamp;
-        $this->closesAt = $this->opensAt->copy()->addSeconds($this->length);
     }
 }

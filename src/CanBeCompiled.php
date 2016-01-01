@@ -2,6 +2,8 @@
 
 namespace BusinessCalendar;
 
+use Carbon\Carbon;
+
 trait CanBeCompiled
 {
     /**
@@ -52,5 +54,17 @@ trait CanBeCompiled
         $lastWeek->moveOpening($lastWeek->opensAt()->subWeek());
 
         return $lastWeek;
+    }
+
+    /**
+     * Move an opening to a given timestamp.
+     *
+     * @param  Carbon $timestamp
+     * @return void
+     */
+    protected function moveOpening(Carbon $timestamp)
+    {
+        $this->opensAt = $timestamp;
+        $this->calculateClosesAt();
     }
 }
