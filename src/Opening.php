@@ -31,24 +31,6 @@ class Opening implements Openingable
     protected $length;
 
     /**
-     * The Opening has been updated.
-     *
-     * @var bool
-     */
-    protected $updated = false;
-
-    /**
-     * Common lengths in seconds.
-     *
-     * @var array
-     */
-    protected static $lengths = [
-        'WEEK' => 604800,
-        'DAY'  => 86400,
-        'HOUR' => 3600,
-    ];
-
-    /**
      * Create a new Opening.
      *
      * @param array $arguments
@@ -63,6 +45,11 @@ class Opening implements Openingable
         $this->time = $arguments['time'];
         $this->length = (int) $arguments['length'];
         $this->timezone = isset($arguments['timezone']) ? $arguments['timezone'] : 'Europe/Paris';
+    }
+
+    public function length()
+    {
+        return $this->length;
     }
 
     /**

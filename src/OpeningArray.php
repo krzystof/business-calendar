@@ -80,4 +80,9 @@ class OpeningArray implements OpeningCollection
     {
         return array_map($callback, $this->openings);
     }
+
+    public function reduce($callback)
+    {
+        return array_reduce($this->openings, $callback);
+    }
 }

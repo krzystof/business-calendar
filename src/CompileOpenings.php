@@ -40,4 +40,18 @@ trait CompileOpenings
             $previous = $opening;
         }
     }
+
+    /**
+     * Get the sum of the working hours of the contained openings.
+     *
+     * @return double
+     */
+    public function workingHours()
+    {
+        $workingHours = $this->openings->reduce(function ($workingHours, $opening) {
+            return $workingHours + $opening->length();
+        });
+
+        return BusinessTime::secondsToHours($workingHours, 1);
+    }
 }

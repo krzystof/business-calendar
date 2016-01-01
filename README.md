@@ -31,9 +31,9 @@ $workingWeek->addOpening(new Opening([
 ]));
 $workingWeek->addOpening($opening2);
 
-$workingWeek->countOpenings();           // -> returns 2
-$workingWeek->isOpenAt(Carbon::now());   // -> returns bool
-
+$workingWeek->countOpenings();           // returns the count of the openings
+$workingWeek->isOpenAt(Carbon::now());   // returns bool
+$workingWeek->workingHours();            // returns the sum of the working hours of the openings
 ```
 <!-- r using a parser included: **This is currently in development**
 ```php

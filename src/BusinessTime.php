@@ -14,6 +14,17 @@ class BusinessTime
     const SECONDS_PER_WEEK = Carbon::DAYS_PER_WEEK * self::SECONDS_PER_DAY;
 
     /**
+     * The day constants
+     */
+    const SUNDAY    = 0;
+    const MONDAY    = 1;
+    const TUESDAY   = 2;
+    const WEDNESDAY = 3;
+    const THURSDAY  = 4;
+    const FRIDAY    = 5;
+    const SATURDAY  = 6;
+
+    /**
      * The days of the week.
      *
      * @var array
@@ -45,7 +56,7 @@ class BusinessTime
      * @param  integer $day
      * @return string
      */
-    public function dayToString($day)
+    public static function dayToString($day)
     {
         return static::$weekDays[$day];
     }
@@ -56,7 +67,7 @@ class BusinessTime
      * @param  integer $hours
      * @return integer
      */
-    public function hoursToSeconds($hours)
+    public static function hoursToSeconds($hours)
     {
         return (int) ($hours * self::SECONDS_PER_HOUR);
     }
@@ -68,7 +79,7 @@ class BusinessTime
      * @param  integer $precision
      * @return double
      */
-    public function secondsToHours($seconds, $precision = 0)
+    public static function secondsToHours($seconds, $precision = 0)
     {
         return round($seconds / self::SECONDS_PER_HOUR, $precision);
     }

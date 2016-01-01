@@ -2,8 +2,6 @@
 
 namespace BusinessCalendar;
 
-use Carbon\Carbon;
-
 class WorkingWeek
 {
     use CompileOpenings;
@@ -39,7 +37,7 @@ class WorkingWeek
      * @param  Datetime  $timestamp
      * @return bool
      */
-    public function isOpenAt(Carbon $timestamp)
+    public function isOpenAt($timestamp)
     {
         foreach ($this->openings as $opening) {
             if ($opening->isOpenAt($timestamp)) {
