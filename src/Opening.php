@@ -10,6 +10,13 @@ class Opening implements Openingable
     use CanBeCompiled, CompareWithOpening, HasOpenAndClosesAtAttributes;
 
     /**
+     * Common values in seconds.
+     */
+    const SECONDS_PER_HOUR = Carbon::SECONDS_PER_MINUTE * Carbon::MINUTES_PER_HOUR;
+    const SECONDS_PER_DAY  = Carbon::HOURS_PER_DAY * self::SECONDS_PER_HOUR;
+    const SECONDS_PER_WEEK = Carbon::DAYS_PER_WEEK * self::SECONDS_PER_DAY;
+
+    /**
      * The day of the week the Opening starts.
      *
      * @var int
@@ -55,7 +62,7 @@ class Opening implements Openingable
      */
     public function __construct($arguments)
     {
-        if ($arguments['length'] > static::$lengths['WEEK']) {
+        if ($arguments['length'] > self::SECONDS_PER_WEEK) {
             throw new InvalidArgumentException('The length of the Opening cannot exceed a week');
         }
 
@@ -74,6 +81,29 @@ class Opening implements Openingable
     public static function dayOfWeek($dayOfWeek)
     {
         return Carbon::parse($dayOfWeek)->dayOfWeek;
+    }
+
+    /**
+     * Get the day of the week as a string.
+     *
+     * @param  [type] $day [description]
+     *
+     * @return [type]      [description]
+     */
+    public static function getWeekDay($day)
+    {
+        $weekDays = [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+        ];
+
+        return $weekDays[$day];
     }
 
     /**
