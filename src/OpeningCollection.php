@@ -4,7 +4,7 @@ namespace BusinessCalendar;
 
 interface OpeningCollection extends \Iterator
 {
-    public function add(Opening $opening);
+    public function add(Openingable $opening);
 
     public function count();
 

@@ -141,4 +141,9 @@ class WorkingWeekSpec extends ObjectBehavior
 
         $this->workingHours()->shouldReturn(12.5);
     }
+
+    public function it_returns_the_open_time_on_a_specific_day()
+    {
+        $this->openTimeOn('Monday')->shouldReturn('8:00');
+    }
 }

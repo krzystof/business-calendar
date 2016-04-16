@@ -47,6 +47,16 @@ class Opening implements Openingable
         $this->timezone = isset($arguments['timezone']) ? $arguments['timezone'] : 'Europe/Paris';
     }
 
+    public function day()
+    {
+        return BusinessTime::dayToString($this->day);
+    }
+
+    public function time()
+    {
+        return $this->time;
+    }
+
     public function length()
     {
         return $this->length;
@@ -59,6 +69,6 @@ class Opening implements Openingable
      */
     public function __toString()
     {
-        return $this->opensAt().' '.$this->closesAt();
+        return $this->opensAt() . ' ' . $this->closesAt();
     }
 }

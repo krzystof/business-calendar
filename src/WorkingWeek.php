@@ -2,6 +2,8 @@
 
 namespace BusinessCalendar;
 
+use Carbon\Carbon;
+
 class WorkingWeek
 {
     use CompileOpenings;
@@ -53,7 +55,7 @@ class WorkingWeek
      *
      * @param BusinessCalendar\Opening $opening
      */
-    public function addOpening(Opening $opening)
+    public function addOpening(Openingable $opening)
     {
         $this->openings->add($opening);
 
@@ -65,7 +67,7 @@ class WorkingWeek
      *
      * @param  int $key
      */
-    public function deleteOpening(Opening $opening)
+    public function deleteOpening(Openingable $opening)
     {
         $this->openings->delete($opening);
     }
@@ -79,6 +81,15 @@ class WorkingWeek
     {
         foreach ($this->openings as $opening) {
             $this->deleteOpening($opening);
+        }
+    }
+
+    public function openTimeOn($weekDay)
+    {
+        foreach ($this->openings as $opening) {
+            if ($opening->day() === $weekDay) {
+                return $opening->time();
+            }
         }
     }
 }

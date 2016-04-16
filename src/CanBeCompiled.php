@@ -12,7 +12,7 @@ trait CanBeCompiled
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    public function overlaps(Mergeable $opening)
+    public function overlaps($opening)
     {
         return $this->covers($opening) || $this->covers($opening->lastWeek());
     }

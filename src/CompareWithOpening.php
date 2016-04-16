@@ -12,7 +12,7 @@ trait CompareWithOpening
      * @param  Carbon\Carbon  $time
      * @return bool
      */
-    public function isOpenAt(Carbon $time)
+    public function isOpenAt($time)
     {
         return $time->between($this->opensAt(), $this->closesAt())
             || $time->copy()->addWeek()->between($this->opensAt(), $this->closesAt());
@@ -24,20 +24,14 @@ trait CompareWithOpening
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    protected function covers(Openingable $opening)
+    protected function covers($opening)
     {
         return $this->isOpenAt($opening->opensAt())
             || $this->isOpenAt($opening->closesAt())
             || $this->isContainedIn($opening);
     }
 
-    /**
-     * Checks if the opening is contained in another opening.
-     *
-     * @param  BusinessCalendar\Opening $opening
-     * @return bool
-     */
-    protected function isContainedIn(Openingable $opening)
+    protected function isContainedIn($opening)
     {
         return $opening->isOpenAt($this->opensAt()) && $opening->isOpenAt($this->closesAt());
     }

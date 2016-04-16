@@ -13,7 +13,7 @@ class OpeningArray implements OpeningCollection
         $this->openings = [];
     }
 
-    public function add(Opening $opening)
+    public function add(Openingable $opening)
     {
         array_push($this->openings, $opening);
         $this->save();
