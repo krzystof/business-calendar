@@ -6,5 +6,6 @@ use Carbon\Carbon;
 
 interface Openingable extends Mergeable, Compilable
 {
-    public function isOpenAt(Carbon $time);
+    public function isOpenAt($time);
 }
+
