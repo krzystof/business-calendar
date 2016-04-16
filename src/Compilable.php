@@ -10,12 +10,12 @@ interface Compilable
      * @param  BusinessCalendar\Opening $opening
      * @return bool
      */
-    public function overlaps(Mergeable $opening);
+    public function overlaps($opening);
 
     /**
      * Merge two Opening together.
      *
      * @param  BusinessCalendar\Opening  $opening
      */
-    public function merges(Mergeable $opening);
+    public function merges($opening);
 }
