@@ -22,7 +22,7 @@ trait CanBeCompiled
      *
      * @param  BusinessCalendar\Opening  $opening
      */
-    public function merges(Mergeable $opening)
+    public function merges($opening)
     {
         if (! $this->overlaps($opening)) {
             return;
