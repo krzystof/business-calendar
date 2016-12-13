@@ -2,7 +2,6 @@
 
 namespace BusinessCalendar;
 
-use Carbon\Carbon;
 use InvalidArgumentException;
 
 class Opening implements Openingable
@@ -69,6 +68,6 @@ class Opening implements Openingable
      */
     public function __toString()
     {
-        return $this->opensAt() . ' ' . $this->closesAt();
+        return $this->opensAt().' '.$this->closesAt();
     }
 }
