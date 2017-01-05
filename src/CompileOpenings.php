@@ -44,7 +44,7 @@ trait CompileOpenings
     /**
      * Get the sum of the working hours of the contained openings.
      *
-     * @return double
+     * @return float
      */
     public function workingHours()
     {
