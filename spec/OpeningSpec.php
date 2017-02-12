@@ -13,7 +13,7 @@ class OpeningSpec extends ObjectBehavior
     {
         $this->beConstructedWith([
             'day'    => Carbon::TUESDAY,
-            'time'   => '10:00',
+            'time'   => '10:00:05',
             'length' => 4 * 3600,
         ]);
     }
@@ -29,6 +29,12 @@ class OpeningSpec extends ObjectBehavior
         $this->opensAt()->format('l H:i')->shouldBe('Tuesday 10:00');
         $this->closesAt()->format('l H:i')->shouldBe('Tuesday 14:00');
     }
+
+    public function it_handles_seconds_as_well()
+    {
+        $this->opensAt()->format('l H:i:s')->shouldBe('Tuesday 10:00:05');
+    }
+
 
     public function it_overlaps_when_an_opening_closes_during_its_timeframe()
     {

@@ -43,7 +43,7 @@ trait HasOpenAndClosesAtAttributes
     {
         if (! is_null($timestamp)) {
             $this->day = $timestamp->dayOfWeek;
-            $this->time = $timestamp->format('H:i');
+            $this->time = $timestamp->format('H:i:s');
             $this->length = $timestamp->diffInSeconds($this->closesAt);
         }
 
@@ -90,7 +90,9 @@ trait HasOpenAndClosesAtAttributes
             $open->next($this->day);
         }
 
-        $open->setTime($this->openHour(), $this->openMinute());
+        $time = Carbon::parse($this->time);
+
+        $open->setTime($time->hour, $time->minute, $time->second);
 
         return $open;
     }
