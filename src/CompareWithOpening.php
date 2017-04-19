@@ -7,12 +7,23 @@ use Carbon\Carbon;
 trait CompareWithOpening
 {
     /**
+     * The opening is open at a given timestamp
+     *
+     * @param  Carbon  $timestamp
+     * @return boolean
+     */
+    public function isOpenAt($timestamp)
+    {
+        return $this->isOpenAtOrWillBeOpenAt($timestamp);
+    }
+
+    /**
      * Check if the opening is open at a given timestamp.
      *
      * @param  Carbon\Carbon  $time
      * @return bool
      */
-    public function isOpenAt($time)
+    public function isOpenAtOrWillBeOpenAt($time)
     {
         return $time->between($this->opensAt(), $this->closesAt())
             || $time->copy()->addWeek()->between($this->opensAt(), $this->closesAt());
@@ -26,8 +37,8 @@ trait CompareWithOpening
      */
     protected function covers($opening)
     {
-        return $this->isOpenAt($opening->opensAt())
-            || $this->isOpenAt($opening->closesAt())
+        return $this->isOpenAtOrWillBeOpenAt($opening->opensAt())
+            || $this->isOpenAtOrWillBeOpenAt($opening->closesAt())
             || $this->isContainedIn($opening);
     }
 
